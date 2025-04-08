@@ -1,10 +1,12 @@
+import { Route, HashRouter as Router, Routes } from 'react-router-dom'
 import './App.css'
+import About from './components/About'
+import Documentation from './components/Documentation'
 import GlassBox from './components/GlassBox'
 
-function App() {
+const Home = () => {
   return (
     <div className="min-h-screen p-8 bg-gradient-to-br from-purple-600 to-blue-500 flex flex-col gap-6 items-center justify-center">
-      
       {/* Simple Glass Box */}
       <GlassBox className="p-6 border border-white/25 shadow-lg">
         <p className="text-white text-lg font-medium">Basic Glass Effect</p>
@@ -26,8 +28,19 @@ function App() {
       <GlassBox className="p-6 border-2 border-pink-300/50 bg-pink-400/20 shadow-lg shadow-pink-500/20">
         <p className="text-white text-lg font-semibold">Custom Colored Glass</p>
       </GlassBox>
-      
     </div>
+  )
+}
+
+const App = () => {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/documentation" element={<Documentation />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
+    </Router>
   )
 }
 

@@ -1,7 +1,7 @@
-import { app, BrowserWindow } from "electron";
+import { Menu, app, BrowserWindow } from "electron";
 import { createRequire } from "node:module";
-import { fileURLToPath } from "node:url";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 process.env.APP_ROOT = path.join(__dirname, "..");
@@ -26,6 +26,31 @@ function createWindow() {
     win.loadFile(path.join(RENDERER_DIST, "index.html"));
   }
 }
+const menuTemplate = [
+  {
+    label: "Help",
+    submenu: [
+      {
+        label: "Documentation",
+        click: () => {
+          if (win) {
+            win.loadURL(VITE_DEV_SERVER_URL ? `${VITE_DEV_SERVER_URL}#/documentation` : `file://${path.join(RENDERER_DIST, "index.html#/documentation")}`);
+          }
+        }
+      },
+      {
+        label: "About",
+        click: () => {
+          if (win) {
+            win.loadURL(VITE_DEV_SERVER_URL ? `${VITE_DEV_SERVER_URL}#/about` : `file://${path.join(RENDERER_DIST, "index.html#/about")}`);
+          }
+        }
+      }
+    ]
+  }
+];
+const menu = Menu.buildFromTemplate(menuTemplate);
+Menu.setApplicationMenu(menu);
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit();

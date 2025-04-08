@@ -1,7 +1,7 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, Menu } from 'electron'
 import { createRequire } from 'node:module'
-import { fileURLToPath } from 'node:url'
 import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -46,6 +46,35 @@ function createWindow() {
     win.loadFile(path.join(RENDERER_DIST, 'index.html'))
   }
 }
+
+// Define the custom menu
+const menuTemplate: Electron.MenuItemConstructorOptions[] = [
+  {
+    label: 'Help',
+    submenu: [
+      {
+        label: 'Documentation',
+        click: () => {
+          if (win) {
+            win.loadURL(VITE_DEV_SERVER_URL ? `${VITE_DEV_SERVER_URL}#/documentation` : `file://${path.join(RENDERER_DIST, 'index.html#/documentation')}`)
+          }
+        },
+      },
+      {
+        label: 'About',
+        click: () => {
+          if (win) {
+            win.loadURL(VITE_DEV_SERVER_URL ? `${VITE_DEV_SERVER_URL}#/about` : `file://${path.join(RENDERER_DIST, 'index.html#/about')}`)
+          }
+        },
+      },
+    ],
+  },
+]
+
+// Set the custom menu
+const menu = Menu.buildFromTemplate(menuTemplate)
+Menu.setApplicationMenu(menu)
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
