@@ -19,7 +19,7 @@ import Section from './Section'
 const Documentation = () => {
   const [activeSection, setActiveSection] = useState('overview');
   
-  const scrollToSection = (id) => {
+  const scrollToSection = (id: string) => {
     setActiveSection(id);
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -280,8 +280,13 @@ const Documentation = () => {
     </Section>
   )
 }
+interface FeatureCardProps {
+  title: string;
+  icon: React.ReactNode;
+  description: string;
+}
 
-const FeatureCard = ({ title, icon, description }) => (
+const FeatureCard = ({ title, icon, description }: FeatureCardProps) => (
   <div className="bg-white/10 p-4 rounded-lg border border-white/20 hover:border-white/40 transition">
     <div className="flex items-center gap-2 mb-2">
       <span className="text-white/90">{icon}</span>

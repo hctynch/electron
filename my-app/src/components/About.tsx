@@ -112,7 +112,11 @@ const About = () => {
 }
 
 // Technology badge component
-const Technology = ({ name, color }) => (
+interface TechnologyProps {
+  name: string;
+  color: string;
+}
+const Technology = ({ name, color }: TechnologyProps) => (
   <div 
     className="px-3 py-1.5 rounded-md text-white font-medium text-sm"
     style={{ backgroundColor: `${color}30`, border: `1px solid ${color}70` }}
