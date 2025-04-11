@@ -30,7 +30,7 @@ const Documentation = () => {
         <div className="flex flex-col max-h-full overflow-y-auto">
           <div className="flex items-center mb-6">
             <Back />
-            <h1 className="text-white text-4xl font-bold text-center w-full">TrackHounds Documentation</h1>
+            <h1 className="text-white text-4xl font-bold text-center w-full">Trackhounds Documentation</h1>
           </div>
           
           {/* Table of Contents */}

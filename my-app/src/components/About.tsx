@@ -10,7 +10,7 @@ const About = () => {
         <div className="flex flex-col">
           <div className="flex items-center w-full mb-6">
             <Back />
-            <h1 className="text-white text-center w-full text-4xl font-bold">About TrackHounds</h1>
+            <h1 className="text-white text-center w-full text-4xl font-bold">About Trackhounds</h1>
           </div>
 
           <div className="text-white/90 space-y-6">
