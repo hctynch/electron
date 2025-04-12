@@ -22,10 +22,15 @@ jobs:
         with:
           node-version: 18
 
+      - name: Change to my-app directory
+        run: cd my-app
+
       - name: Install dependencies
+        working-directory: ./my-app
         run: npm ci
 
       - name: Build and publish
+        working-directory: ./my-app
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm run publish
