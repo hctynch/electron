@@ -2,10 +2,10 @@ import { app, BrowserWindow, ipcMain, Menu } from 'electron';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 // Import auto-updater module
+import * as dotenv from 'dotenv';
 import { autoUpdater } from 'electron-updater';
-
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-
+dotenv.config({ path: path.join(__dirname, '..', '.env') })
 // The built directory structure
 //
 // ├─┬─┬ dist
