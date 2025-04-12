@@ -3,6 +3,7 @@ import {
   FaChartBar,
   FaClipboardList,
   FaDog,
+  FaDownload,
   FaGavel,
   FaHome
 } from "react-icons/fa";
@@ -73,6 +74,16 @@ function Navbar() {
               <div className='flex items-center gap-3 text-white hover:bg-gray-600/40 rounded-2xl hover:border-1 border-white p-1'>
                 <FaChartBar className="ml-2 text-xl" />
                 <p className='text-start text-xl font-normal'>Reports</p>
+              </div>
+            </div>
+          </a>
+          
+          {/* Add Update navigation item */}
+          <a href='#/update' className=''>
+            <div className='w-full flex flex-col'>
+              <div className='flex items-center gap-3 text-white hover:bg-gray-600/40 rounded-2xl hover:border-1 border-white p-1'>
+                <FaDownload className="ml-2 text-xl" />
+                <p className='text-start text-xl font-normal'>Update</p>
               </div>
             </div>
           </a>

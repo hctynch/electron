@@ -1,4 +1,4 @@
-import { ipcRenderer, contextBridge } from 'electron'
+import { contextBridge, ipcRenderer } from 'electron'
 
 // --------- Expose some API to the Renderer process ---------
 contextBridge.exposeInMainWorld('ipcRenderer', {
@@ -19,6 +19,13 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
     return ipcRenderer.invoke(channel, ...omit)
   },
 
-  // You can expose other APTs you need here.
-  // ...
+  // Update-related functions
+  checkForUpdates: () => ipcRenderer.invoke('check-for-updates'),
+  downloadUpdate: () => ipcRenderer.invoke('download-update'),
+  installUpdate: () => ipcRenderer.send('install-update'),
+  getAppVersion: () => ipcRenderer.invoke('get-app-version'),
+  
+  // Additional endpoints as needed
+  // saveData: (data: any) => ipcRenderer.invoke('save-data', data),
+  // loadData: () => ipcRenderer.invoke('load-data'),
 })

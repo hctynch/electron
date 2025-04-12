@@ -1,9 +1,9 @@
-import { app, BrowserWindow, Menu } from 'electron'
-import { createRequire } from 'node:module'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { app, BrowserWindow, ipcMain, Menu } from 'electron';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+// Import auto-updater module
+import { autoUpdater } from 'electron-updater';
 
-const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 // The built directory structure
@@ -76,6 +76,78 @@ const menuTemplate: Electron.MenuItemConstructorOptions[] = [
 // Set the custom menu
 const menu = Menu.buildFromTemplate(menuTemplate)
 Menu.setApplicationMenu(menu)
+
+// Setup auto-updater
+autoUpdater.autoDownload = false
+autoUpdater.autoInstallOnAppQuit = true
+
+// Add update-related IPC handlers
+ipcMain.handle('check-for-updates', async () => {
+  try {
+    const checkResult = await autoUpdater.checkForUpdates()
+    return {
+      updateAvailable: !!checkResult?.updateInfo,
+      version: checkResult?.updateInfo?.version || null,
+      releaseNotes: checkResult?.updateInfo?.releaseNotes || null
+    }
+  } catch (error) {
+    console.error('Error checking for updates:', error)
+    return {
+      updateAvailable: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    }
+  }
+})
+
+ipcMain.handle('download-update', async () => {
+  try {
+    const downloadResult = await autoUpdater.downloadUpdate()
+    return {
+      success: true,
+      downloadedPath: Array.isArray(downloadResult) ? downloadResult.join(', ') : null
+    }
+  } catch (error) {
+    console.error('Error downloading update:', error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    }
+  }
+})
+
+ipcMain.on('install-update', () => {
+  // This will quit and install the update
+  autoUpdater.quitAndInstall(false, true)
+})
+
+ipcMain.handle('get-app-version', () => {
+  return app.getVersion()
+})
+
+// Set up update event listeners
+autoUpdater.on('update-available', (info) => {
+  if (win) {
+    win.webContents.send('update-available', info)
+  }
+})
+
+autoUpdater.on('update-not-available', (info) => {
+  if (win) {
+    win.webContents.send('update-not-available', info)
+  }
+})
+
+autoUpdater.on('download-progress', (progressInfo) => {
+  if (win) {
+    win.webContents.send('download-progress', progressInfo)
+  }
+})
+
+autoUpdater.on('update-downloaded', (info) => {
+  if (win) {
+    win.webContents.send('update-downloaded', info)
+  }
+})
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
