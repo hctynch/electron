@@ -3,6 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 // Import auto-updater module
 import * as dotenv from 'dotenv';
+import logger from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 dotenv.config({ path: path.join(__dirname, '..', '.env') })
@@ -81,6 +82,15 @@ Menu.setApplicationMenu(menu)
 autoUpdater.autoDownload = false
 autoUpdater.autoInstallOnAppQuit = false
 
+// Force production update mode
+if (app.isPackaged) {
+  autoUpdater.logger = logger;
+  logger.transports.file.level = "info";
+  
+  // This ensures the app knows it's in production mode
+  process.env.NODE_ENV = 'production';
+}
+
 // Add update-related IPC handlers
 ipcMain.handle('check-for-updates', async () => {
   try {
@@ -148,6 +158,13 @@ autoUpdater.on('update-downloaded', (info) => {
     win.webContents.send('update-downloaded', info)
   }
 })
+
+autoUpdater.on('error', (error) => {
+  console.error('AutoUpdater error:', error);
+  if (win) {
+    win.webContents.send('update-error', error.message);
+  }
+});
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits

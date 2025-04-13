@@ -7,7 +7,7 @@
   directories: {
     output: 'release/${version}',
   },
-  files: ['dist', 'dist-electron', 'dev-app-update.yml'],
+  files: ['dist', 'dist-electron'],
   publish: [
     {
       provider: 'github',
