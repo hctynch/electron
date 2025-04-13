@@ -1,7 +1,7 @@
 {
   "name": "electron",
   "private": true,
-  "version": "1.0.10",
+  "version": "1.0.11",
   "type": "module",
   "scripts": {
     "clean": "rimraf release dist dist-electron",
@@ -40,5 +40,9 @@
     "vite-plugin-electron": "^0.28.6",
     "vite-plugin-electron-renderer": "^0.14.5"
   },
-  "main": "dist-electron/main.js"
+  "main": "dist-electron/main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hctynch/electron.git"
+  }
 }
