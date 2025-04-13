@@ -91,8 +91,10 @@ function UpdateComponent() {
                           <p className="font-medium">Update Available: {updateInfo?.version}</p>
                           {updateInfo?.releaseNotes && (
                             <div className="mt-2">
-                              <h3 className="font-medium">Release Notes:</h3>
-                              <p>{updateInfo.releaseNotes}</p>
+                              <div 
+                                className="prose prose-sm max-w-none" 
+                                dangerouslySetInnerHTML={{ __html: updateInfo.releaseNotes }} 
+                              />
                             </div>
                           )}
 

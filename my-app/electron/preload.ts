@@ -24,6 +24,7 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
   downloadUpdate: () => ipcRenderer.invoke('download-update'),
   installUpdate: () => ipcRenderer.send('install-update'),
   getAppVersion: () => ipcRenderer.invoke('get-app-version'),
+
   
   // Additional endpoints as needed
   // saveData: (data: any) => ipcRenderer.invoke('save-data', data),

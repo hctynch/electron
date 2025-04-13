@@ -2,11 +2,8 @@ import { app, BrowserWindow, ipcMain, Menu } from 'electron';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 // Import auto-updater module
-import * as dotenv from 'dotenv';
-import logger from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-dotenv.config({ path: path.join(__dirname, '..', '.env') })
 // The built directory structure
 //
 // ├─┬─┬ dist
@@ -27,12 +24,22 @@ process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, 
 
 let win: BrowserWindow | null
 
+// Force production mode for installed app
+if (process.resourcesPath && process.resourcesPath.includes('\\resources')) {
+  Object.defineProperty(app, 'isPackaged', {
+    get() { return true; }
+  });
+  // Explicitly set NODE_ENV to production
+  process.env.NODE_ENV = 'production';
+  console.log('Forced production mode. isPackaged=true, NODE_ENV=production');
+}
+
 function createWindow() {
   win = new BrowserWindow({
     title: "Trackhounds",
-    icon: path.join(process.env.VITE_PUBLIC, 'electron-vite.svg'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.mjs'),
+      contextIsolation: true,
     },
   })
 
@@ -47,6 +54,7 @@ function createWindow() {
     // win.loadFile('dist/index.html')
     win.loadFile(path.join(RENDERER_DIST, 'index.html'))
   }
+
 }
 
 // Define the custom menu
@@ -74,6 +82,8 @@ const menuTemplate: Electron.MenuItemConstructorOptions[] = [
   },
 ]
 
+
+
 // Set the custom menu
 const menu = Menu.buildFromTemplate(menuTemplate)
 Menu.setApplicationMenu(menu)
@@ -82,14 +92,9 @@ Menu.setApplicationMenu(menu)
 autoUpdater.autoDownload = false
 autoUpdater.autoInstallOnAppQuit = false
 
-// Force production update mode
-if (app.isPackaged) {
-  autoUpdater.logger = logger;
-  logger.transports.file.level = "info";
-  
-  // This ensures the app knows it's in production mode
-  process.env.NODE_ENV = 'production';
-}
+
+
+
 
 // Add update-related IPC handlers
 ipcMain.handle('check-for-updates', async () => {
@@ -166,16 +171,7 @@ autoUpdater.on('error', (error) => {
   }
 });
 
-// Force `app.isPackaged` to `true` if running from an ASAR archive
-if (process.resourcesPath.includes('app.asar')) {
-  Object.defineProperty(app, 'isPackaged', {
-    get() {
-      return true;
-    },
-  });
-  process.env.NODE_ENV = 'production';
-  console.log('Forcing app.isPackaged = true');
-}
+
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
