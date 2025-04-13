@@ -40,7 +40,7 @@ jobs:
       - name: Update Release Notes
         uses: softprops/action-gh-release@v1
         with:
-          name: Electron App v${{ github.ref_name }}
+          name: Electron App ${{ github.ref_name }}
           body: |
             ## Release Notes
 

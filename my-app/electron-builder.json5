@@ -8,16 +8,6 @@
     output: 'release/${version}',
   },
   files: ['dist', 'dist-electron'],
-  publish: [
-    {
-      provider: 'github',
-      owner: 'hctynch',
-      repo: 'electron',
-      releaseType: 'release',
-      private: false,
-      publishAutoUpdate: true,
-    },
-  ],
   mac: {
     target: ['dmg'],
     artifactName: '${productName}-Mac-${version}-Installer.${ext}',
