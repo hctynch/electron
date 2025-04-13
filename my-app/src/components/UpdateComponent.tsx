@@ -72,7 +72,7 @@ function UpdateComponent() {
   
     return (
         <Section>
-            <GlassBox className='border rounded-r-2xl shadow shadow-white/70'>
+            <GlassBox className='border rounded-r-2xl shadow shadow-white/70 overflow-y-auto'>
                 <div className="p-4">
                     <h2 className="text-xl font-semibold mb-4">Application Updates</h2>
                     <p>Current Version: {currentVersion}</p>
