@@ -90,7 +90,7 @@
       "owner": "hctynch",
       "repo": "electron",
       "private": false,
-      "release": "release"
+      "releaseType": "release"
     }
   }
 }
