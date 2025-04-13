@@ -6,7 +6,7 @@ function UpdateComponent() {
   const [checking, setChecking] = useState(false)
   const [downloading, setDownloading] = useState(false)
   const [updateAvailable, setUpdateAvailable] = useState(false)
-  const [updateInfo, setUpdateInfo] = useState<{ version: string; releaseNotes?: string } | null>(null)
+  const [updateInfo, setUpdateInfo] = useState<{ version: string; releaseNotes?: React.ReactNode } | null>(null)
   const [currentVersion, setCurrentVersion] = useState("")
   const [progress, setProgress] = useState(0)
   
@@ -28,8 +28,9 @@ function UpdateComponent() {
     // Get current version
     window.ipcRenderer.invoke('get-app-version').then(version => {
       setCurrentVersion(version)
+      setUpdateAvailable(true)
+      setUpdateInfo({ version: "1.1.4", releaseNotes: <h2>This is a test update</h2> })
     })
-    
     // Listen for update events with stored references to handlers
     window.ipcRenderer.on('update-available', handleUpdateAvailable)
     window.ipcRenderer.on('download-progress', handleDownloadProgress)
@@ -47,6 +48,11 @@ function UpdateComponent() {
     setChecking(true)
     try {
       const result = await window.ipcRenderer.invoke('check-for-updates')
+      if (result.version.equals(currentVersion)) {
+        setUpdateAvailable(false)
+        setChecking(false)
+        return
+      }
       setUpdateAvailable(result.updateAvailable)
       setUpdateInfo(result)
       setChecking(false)
@@ -87,14 +93,11 @@ function UpdateComponent() {
                       </button>
 
                       {updateAvailable && (
-                        <div className="text-black mt-4 p-4 border rounded bg-green-100">
+                        <div className="text-black mt-4 p-4 border rounded bg-green-100 flex flex-col">
                           <p className="font-medium">Update Available: {updateInfo?.version}</p>
                           {updateInfo?.releaseNotes && (
-                            <div className="mt-2">
-                              <div 
-                                className="prose prose-sm max-w-none" 
-                                dangerouslySetInnerHTML={{ __html: updateInfo.releaseNotes }} 
-                              />
+                            <div className="mt-2 flex">
+                              {updateInfo.releaseNotes}
                             </div>
                           )}
 
