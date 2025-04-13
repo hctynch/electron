@@ -13,6 +13,7 @@
       provider: 'github',
       owner: 'hctynch',
       repo: 'electron',
+      releaseType: 'release',
     },
   ],
   mac: {
