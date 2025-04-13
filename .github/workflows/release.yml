@@ -33,7 +33,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           package_root: my-app
           release: ${{startsWith(github.ref, 'refs/tags/v') }}
-          args: --publish always --config.publish.vPrefixedTagName=true
+          args: '--publish always' # Remove the vPrefixedTagName parameter
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
