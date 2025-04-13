@@ -1,12 +1,12 @@
 {
   "name": "electron",
   "private": true,
-  "version": "1.0.13",
+  "version": "1.1.0",
   "type": "module",
   "scripts": {
     "clean": "rimraf release dist dist-electron",
     "dev": "vite",
-    "build": "npm run clean && tsc && vite build && electron-builder",
+    "build": "npm run clean && tsc && vite build",
     "publish": "npm run clean && tsc && vite build && electron-builder --publish always",
     "publish:draft": "npm run clean && tsc && vite build && electron-builder --publish onTag",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
@@ -89,7 +89,8 @@
       "provider": "github",
       "owner": "hctynch",
       "repo": "electron",
-      "private": false
+      "private": false,
+      "release": "release"
     }
   }
 }
