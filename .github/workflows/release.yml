@@ -14,11 +14,13 @@ jobs:
 
     strategy:
       matrix:
-        os: [windows-latest] # You can add macos-latest, ubuntu-latest if needed
+        os: [windows-latest]
 
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # This ensures all tags are fetched
 
       - name: Install Node.js
         uses: actions/setup-node@v3
