@@ -87,7 +87,7 @@ function UpdateComponent() {
                       </button>
 
                       {updateAvailable && (
-                        <div className="mt-4 p-4 border rounded bg-green-100">
+                        <div className="text-black mt-4 p-4 border rounded bg-green-100">
                           <p className="font-medium">Update Available: {updateInfo?.version}</p>
                           {updateInfo?.releaseNotes && (
                             <div className="mt-2">
