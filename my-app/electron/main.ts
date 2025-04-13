@@ -79,7 +79,8 @@ Menu.setApplicationMenu(menu)
 
 // Setup auto-updater
 autoUpdater.autoDownload = false
-autoUpdater.autoInstallOnAppQuit = true
+autoUpdater.autoInstallOnAppQuit = false
+autoUpdater.forceDevUpdateConfig = true
 
 // Add update-related IPC handlers
 ipcMain.handle('check-for-updates', async () => {
